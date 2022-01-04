@@ -1,13 +1,15 @@
 
+from os import environ
 from typing import Text
 import telegram
 import logging
 import random
 from datetime import datetime
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, updater, ConversationHandler
-
+from flask import Flask
 TOKEN = '1964203815:AAFREBYZiXTYHesgJUhKVHVgT1zwadCm32Y'
 
+app = Flask(__name__)
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
@@ -313,6 +315,13 @@ def main():
     # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
 
-
-if __name__ == '__main__':
+@app.route("/")
+def hello():
     main()
+    return "Hello World!"
+
+    
+if __name__ == '__main__':
+    port = int(environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True,Threaded=True)
+    #main()
