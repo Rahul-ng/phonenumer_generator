@@ -3,6 +3,7 @@ from os import environ
 from typing import Text
 import telegram
 import logging
+from threading import Thread
 import random
 from datetime import datetime
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, updater, ConversationHandler
@@ -317,11 +318,13 @@ def main():
 
 @app.route("/")
 def hello():
-    main()
     return "Hello World!"
 
-    
-if __name__ == '__main__':
+def start_flask():
     port = int(environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True,threaded=True)
-    #main()
+    app.run(threaded=True, host="0.0.0.0", port=port)
+
+if __name__ == '__main__':
+    t1 = Thread(target=start_flask)
+    t1.start()
+    main()
